@@ -15,7 +15,7 @@ import tacos from "../assets/tacos.png"
 import ios from "../assets/apple.png"
 import android from "../assets/android.png"
 
-let menu_url = "https://food-mood-backend.onrender.com/menu_card.jpg"
+let menu_url = "https://food-mood-frontend.vercel.app/menu_card.jpg"
 
 function Home() {
   const [isLoading, setIsLoading] = useState(false);
