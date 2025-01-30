@@ -15,7 +15,7 @@ import tacos from "../assets/tacos.png"
 import ios from "../assets/apple.png"
 import android from "../assets/android.png"
 
-let menu_url = "http://localhost:3000/menu_card.jpg"
+let menu_url = "https://food-mood-backend.onrender.com/menu_card.jpg"
 
 function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +29,7 @@ function Home() {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      let response = await axios.get("http://localhost:5000/api/fooddata");
+      let response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/fooddata`);
       // console.log(response.data[0]);
       setFoodCat(response.data[1]);
       setFoodItems(response.data[0]);
@@ -57,17 +57,17 @@ function Home() {
 
 
   return (
-    <div className="min-h-screen   pt-44 md:pt-24 w-12/12 mx-auto ">
-      <div className="mainContent w-9/12  mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="min-h-screen   pt-24 md:pt-24 w-12/12 mx-auto ">
+      <div className="mainContent w-9/12  mx-auto grid grid-cols-1 md:grid-cols-2 gap-0">
         <div className="flex flex-col md:flex-col justify-center items-center md:h-[35rem]">
-          <h1 className="font-bold text-6xl md:text-9xl">
+          <h1 className="font-extrabold md:font-bold text-6xl md:text-9xl">
             Fastest <span className="text-amber-600">Delivery</span> & Easy{" "}
             <span className="text-amber-600">Pickup</span>
           </h1>
         </div>
         <div className="flex flex-col md:flex-col justify-center items-end md:h-[35rem]">
           <img src={photo} alt="image" className="h-[25rem]" />
-          <h1 className="mt-6 text-2xl font-bold">
+          <h1 className="text-2xl font-bold">
             Too lazy to cook , just take a look !
           </h1>
         </div>
@@ -90,17 +90,29 @@ function Home() {
           <Button>Get App  <ArrowRight className="ml-2" /></Button>
         </div>
       </div>
-        <div className="flex items-center justify-start bg-slate-100 dark:bg-slate-900 mt-4 mb-4 gap-0 md:gap-20 w-full overflow-hidden">
-        <img src={Burger} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={Nood} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={piz} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={tacos} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={sweet} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={Burger} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={Nood} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={piz} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={tacos} height={"100px"} width={"100px"} className="animate-bounce"/>
-        <img src={sweet} height={"100px"} width={"100px"} className="animate-bounce"/>
+        {/* <div className="flex items-center justify-start bg-slate-100 dark:bg-slate-900 mt-4 mb-4 gap-0 md:gap-20 w-full overflow-hidden">
+        
+        </div> */}
+        <div className="mar m-4 p-4 w-full md:w-4/5  mx-auto  flex justify-center items-center overflow-hidden">
+        <div className="mar-grp w-1/2 flex justify-around items-center space-x-8 ">
+          <img src={Burger} height={"100px"} width={"100px"} />
+        <img src={Nood} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={piz} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={tacos} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={sweet} height={"100px"} width={"100px"} className="object-contain"/>
+          <img src={Burger} height={"100px"} width={"100px"} />
+        <img src={Nood} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={piz} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={tacos} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={sweet} height={"100px"} width={"100px"} className="object-contain"/>
+          <img src={Burger} height={"100px"} width={"100px"} />
+        <img src={Nood} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={piz} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={tacos} height={"100px"} width={"100px"} className="object-contain"/>
+        <img src={sweet} height={"100px"} width={"100px"} className="object-contain"/>
+          <div className="img-grp  grid gap-4 items-center">
+          </div>
+        </div>
         </div>
     </div>
   );

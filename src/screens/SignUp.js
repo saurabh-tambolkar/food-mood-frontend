@@ -145,9 +145,9 @@ function SignUp() {
               </FormControl>
               {
                 showPass ?
-                <EyeOff className="size-5 relative left-80 -top-10" onClick={()=>setSowPass(!showPass)}/>
+                <EyeOff className="size-5 relative left-[250px] md:left-80 -top-10" onClick={()=>setSowPass(!showPass)}/>
                 :
-                <Eye className="size-5 relative left-80 -top-10" onClick={()=>setSowPass(!showPass)} />
+                <Eye className="size-5 relative left-[250px] md:left-80 -top-10" onClick={()=>setSowPass(!showPass)} />
               }
               <FormMessage />
             </FormItem>

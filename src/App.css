@@ -1,0 +1,15 @@
+@keyframes scroll {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+  
+  .mar-grp {
+    display: flex;
+    animation: scroll 10s linear infinite;
+    white-space: no-wrap;
+  }
+  

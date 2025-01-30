@@ -140,7 +140,9 @@ export default function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    refreshToken();
+    if(!tokenToSend){
+      refreshToken();
+    }
   }, []);
 
   const logout = () => {

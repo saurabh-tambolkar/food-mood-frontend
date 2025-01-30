@@ -1,11 +1,14 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import apiClient from './apiClient';
 import { useToast } from '../components/ui/use-toast';
+import { AuthContext } from './Auth';
 
 const CartContext = createContext();
 
 export default function CartProvider({children}) {
-    let name = "saurabh";
+    // let name = "saurabh";
+    let {currentUser} = useContext(AuthContext);
+    console.log("this is current  user form cart",currentUser)
 
     const [cartLength, setCartLength] = useState("0");
 
@@ -56,13 +59,15 @@ export default function CartProvider({children}) {
       }
   
       useEffect(()=>{
-        getCartItems()
-        getCartLength();
+        if(currentUser!==null){
+          getCartItems()
+          getCartLength();
+        }
       },[])
     
 
   return (
-    <CartContext.Provider value={{name,cartLength,cartItems,total,handleEmptyCart,getCartLength,getCartItems}}>
+    <CartContext.Provider value={{cartLength,cartItems,total,handleEmptyCart,getCartLength,getCartItems}}>
         {children}
     </CartContext.Provider>
   )

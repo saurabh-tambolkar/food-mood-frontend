@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import "./App.css"
 import Navbar from "./components/Navbar";
 import Home from "./screens/Home";
 import MyOrders from "./screens/MyOrders";
@@ -54,9 +55,9 @@ const App = () => {
         <Route
           path="/paymentsuccess"
           element={
-            // <ProtectedRoute>
+            <ProtectedRoute>
               <PaymentSuccess/>
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
