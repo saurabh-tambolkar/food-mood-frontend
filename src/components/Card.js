@@ -5,6 +5,7 @@ import { addProduct,removeProduct,updateProduct,dropCart } from '../context/slic
 import { useToast } from './ui/use-toast';
 import apiClient from '../context/apiClient';
 import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/Auth';
 
 
 function Card({options,foodItems}) {
@@ -22,33 +23,43 @@ function Card({options,foodItems}) {
   let finalPrice=quantity*parseInt(data[size],10)
 
   const {getCartLength,getCartItems} = useContext(CartContext)
+  let {currentUser} = useContext(AuthContext);
 
   const handleAddToCartModel=async(item)=>{
-    try {
-      let dataToSend = {
-        productId:item._id,
-        size:size,
-        quantity,
-        price:finalPrice,
-      }
-      console.log(dataToSend)
-      const response = await apiClient.post('/api/addToCart',dataToSend)
-      console.log(response)
-      if(response.data.success){
-        getCartLength();
-        getCartItems();
+    if(currentUser !== null){
+      try {
+        let dataToSend = {
+          productId:item._id,
+          size:size,
+          quantity,
+          price:finalPrice,
+        }
+        console.log(dataToSend)
+        const response = await apiClient.post('/api/addToCart',dataToSend)
+        console.log(response)
+        if(response.data.success){
+          getCartLength();
+          getCartItems();
+          toast({
+            title: 'Item Added',
+            description: 'Product has been added to your cart',
+          })
+        }
+      } catch (error) {
+        console.log(error)
         toast({
-          title: 'Item Added',
-          description: 'Product has been added to your cart',
+          title: 'Item cant be added',
+          description: 'Product has not been added to your cart',
+          variant:"destructive"
         })
       }
-    } catch (error) {
-      console.log(error)
+    }
+    else{
       toast({
-        title: 'Item cant be added',
-        description: 'Product has not been added to your cart',
+        title: 'Please login',
+        description: 'You need to login to add item to cart',
         variant:"destructive"
-      })
+        })
     }
   }
 

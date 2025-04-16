@@ -17,6 +17,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import ForgotPassWord from "./screens/ForgotPassWord";
 import ResetPass from "./screens/ResetPass";
+import NotFound from "./screens/NotFound";
 
 const getToken = () =>{
    const cookie = document.cookie;
@@ -31,7 +32,8 @@ const App = () => {
   const location = useLocation();
   return (
     <div>
-     {location.pathname.startsWith('/reset-password') ? null : <Navbar />}
+     {/* {location.pathname.startsWith('/reset-password') || location.pathname.startsWith('/paymentsuccess') ? null : <Navbar />} */}
+     {location.pathname.startsWith("/reset-password") || location.pathname === "/paymentsuccess" ? null : <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
@@ -55,9 +57,9 @@ const App = () => {
         <Route
           path="/paymentsuccess"
           element={
-            <ProtectedRoute>
               <PaymentSuccess/>
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            // </ProtectedRoute>
           }
         />
         <Route
@@ -101,8 +103,9 @@ const App = () => {
           }
         />
         <Route path="/newRou" element={<h1>Hello </h1>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
-      {location.pathname.startsWith('/reset-password') ? null : <Footer/>}
+      {location.pathname.startsWith('/reset-password') || location.pathname === "/paymentsuccess" ? null : <Footer/>}
     </div>
   );
 };

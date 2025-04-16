@@ -104,19 +104,19 @@ const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
   const navigate = useNavigate();
 
   // Helper to extract cookie value
-  const getCookieValue = (name) => {
-    const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-    return match ? match[2] : null;
-  };
+  // const getCookieValue = (name) => {
+  //   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  //   return match ? match[2] : null;
+  // };
 
   const refreshTokenToSend = localStorage.getItem('refreshToken');
-  const tokenToSend = getCookieValue('fmCookie') || refreshTokenToSend;
+  const tokenToSend = document.cookie.split('=')[1] || refreshTokenToSend;
 
   const refreshToken = async () => {
     try {
@@ -124,10 +124,12 @@ export default function AuthProvider({ children }) {
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/verify-token/${tokenToSend}`
         );
-        setCurrentUser(response.data.data);
+        if(response.data.success){
+          setCurrentUser(response.data.data);
         document.cookie = `fmCookie=${response.data.accessToken}; max-age=${
           60 * 60
         }; Secure; SameSite=Strict;`;
+        }
       } else {
         setCurrentUser(null);
       }
@@ -140,7 +142,7 @@ export default function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    if(!tokenToSend){
+    if(tokenToSend){
       refreshToken();
     }
   }, []);

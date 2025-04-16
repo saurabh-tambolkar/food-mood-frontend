@@ -82,7 +82,11 @@ function Home() {
         <img src={appPhoto} height={"200px"} width={"200px"}/>
       </div>
         <div className="flex gap-10 flex-col justify-around items-center">
-          <h1 className="text-3xl md:text-6xl font-bold text-center">You can also download our App.</h1>
+          <h1 className="text-3xl md:text-2xl font-bold text-center">You can also download our App.</h1>
+          <div className=" hidden md:flex flex-col items-center gap-4">
+            <img src="/qrUrl.png" width={"100px"}/>
+            <p className="text-lg font-bold">Scan this qr to get to our website.</p>
+          </div>
           <div className="flex w-1/2  justify-evenly">
             <img src={android} width={"40px"}/>
             <img src={ios} width={"40px"}/>

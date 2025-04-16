@@ -15,12 +15,17 @@
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/Auth';
+import { Loader2 } from 'lucide-react';
 
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useContext(AuthContext);
+  console.log("Current User:", currentUser);
+  console.log("Loading State:", loading);
+
+
 
   if (loading) {
-    return <div>Loading...</div>; // Replace with your loader or spinner
+    return <div>Loading <Loader2/></div>; // Replace with your loader or spinner
   }
 
   return currentUser ? children : <Navigate to="/sign-in" />;

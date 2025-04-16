@@ -27,13 +27,12 @@ const SignUpFormSchema = z.object({
 
 function SignIn() {
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPass,setSowPass] = useState(false)
 
   const {toast} = useToast()
   const navigate = useNavigate();
 
-  const {login} = useContext(AuthContext)
+  const {login,isSubmitting} = useContext(AuthContext)
 
   const form = useForm({
     resolver: zodResolver(SignUpFormSchema),
