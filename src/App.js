@@ -18,6 +18,7 @@ import PublicRoute from "./components/PublicRoute";
 import ForgotPassWord from "./screens/ForgotPassWord";
 import ResetPass from "./screens/ResetPass";
 import NotFound from "./screens/NotFound";
+import Profile from "./screens/Profile";
 
 const getToken = () =>{
    const cookie = document.cookie;
@@ -41,16 +42,24 @@ const App = () => {
           path="/my-orders"
           element={
             <ProtectedRoute>
-            <MyOrders />
+            <MyOrders/>
             </ProtectedRoute>
           }
         />
         <Route path="/rewards" element={<Rewards />} />
         <Route
-          path="/my-cart"
+          path="/my-plate"
           element={
             <ProtectedRoute>
               <Cart/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-profile"
+          element={
+            <ProtectedRoute>
+              <Profile/>
             </ProtectedRoute>
           }
         />

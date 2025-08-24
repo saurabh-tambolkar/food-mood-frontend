@@ -33,7 +33,7 @@ function Cart() {
         console.log(response.data)
         if(response.data.success){
           toast({
-            title: 'Item quantity updated',
+            title: 'Dish quantity updated',
             description: response.data.message,
           })
           getCartLength();
@@ -62,7 +62,7 @@ function Cart() {
         console.log(response.data)
         if(response.data.success){
           toast({
-            title: 'Item quantity updated',
+            title: 'Dish quantity updated',
             description: response.data.message,
           })
           getCartLength();
@@ -122,13 +122,13 @@ function Cart() {
   return (
     <div className='cart flex flex-col gap-5 pt-24 w-full min-h-screen flex justify-center items-center'>
       <div className="mycart w-11/12 md:w-4/12 bg-gray-300 dark:bg-slate-900 rounded mx-auto flex justify-center flex-col items-center p-8">
-      <h1 className='text-3xl font-bold mb-4'>Your Cart</h1>
-      <p className='mb-4'>Total items: {cartItems.length} </p>
+      <h1 className='text-3xl font-bold mb-4'>Your Plate</h1>
+      <p className='mb-4'>Total dishes: {cartItems.length} </p>
       {
         cartItems.length == 0 ?
         (
             <div>
-                <h3>Your cart is empty</h3>
+                <h3>Your Plate is empty</h3>
             </div>
         )
         :
@@ -158,7 +158,7 @@ function Cart() {
       {
         cartItems.length > 0 && (
           <div className="bottom mt-8 space-x-4">
-        <Button onClick={handleEmptyCart}>Empty Cart</Button>
+        <Button onClick={handleEmptyCart}>Empty Plate</Button>
         <Button onClick={()=>handleCheckOutCart(total)}>Checkout : {total} ₹</Button>
       </div>
         )

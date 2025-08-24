@@ -98,6 +98,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useToast } from '../components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import socket from './socket';
 
 const AuthContext = createContext();
 
@@ -105,6 +106,7 @@ export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
+  // const [imageUrl,setImageUrl] = useState()
 
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -142,6 +144,13 @@ export default function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+  if (socket && currentUser?._id) {
+    console.log("this id is added",currentUser._id)
+    socket.emit("addUser", currentUser._id);
+  }
+}, [socket,currentUser]);
+
+  useEffect(() => {
     if(tokenToSend){
       refreshToken();
     }
@@ -162,10 +171,14 @@ export default function AuthProvider({ children }) {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/sign-in`,
-        data
+        data,
+         {
+    withCredentials: true, // 🔥 This is required for cookies to work
+  }
       );
       if (response.data && response.data.success) {
         setCurrentUser(response.data.user);
+        console.log("Access token from backend:", response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         document.cookie = `fmCookie=${response.data.accessToken}; max-age=86400; Secure; SameSite=Strict;`;
         toast({
@@ -191,7 +204,7 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, login, logout, isSubmitting, loading }}
+      value={{ currentUser, login, logout, isSubmitting, loading,setCurrentUser }}
     >
       {children}
     </AuthContext.Provider>

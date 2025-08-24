@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom';
 import { CircleCheckBig,Loader2, Vault } from 'lucide-react';
 import apiClient from '../context/apiClient';
 import { useSelector } from 'react-redux';
 import { useToast } from '../components/ui/use-toast';
 import { CartContext } from '../context/CartContext';
+import Invoice from "../components/Invoice"
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 function PaymentSuccess() {
 
@@ -50,6 +53,57 @@ function PaymentSuccess() {
       placeOrder()
     },[])
 
+
+     const invoiceRef = useRef();
+
+
+     const invoiceData = {
+  invoiceNumber: "INV-1001",
+  customerName: "Saurabh Tambolkar",
+  email: "saurabh@example.com",
+  date: "2025-07-29",
+  paymentMethod: "Credit Card",
+  items: [
+    {
+      name: "Veggie Delight Pizza",
+      quantity: 2,
+      price: 299,
+    },
+    {
+      name: "Choco Lava Cake",
+      quantity: 1,
+      price: 129,
+    },
+    {
+      name: "Coca-Cola (500ml)",
+      quantity: 3,
+      price: 50,
+    },
+  ],
+  total: 299 * 2 + 129 + 50 * 3, // 597 + 129 + 150 = 876
+};
+
+
+  // const invoiceDetails = {
+  //   invoiceNumber: `INV-${Date.now()}`,
+  //   customerName: orderData.user.name,
+  //   email: orderData.user.email,
+  //   items: orderData.items,
+  //   total: orderData.total,
+  //   date: new Date().toLocaleDateString(),
+  //   paymentMethod: orderData.paymentMethod,
+  // };
+
+  const generatePDF = async () => {
+    const element = invoiceRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF();
+    pdf.addImage(imgData, "PNG", 10, 10);
+    pdf.save(`${invoiceData.invoiceNumber}.pdf`);
+  };
+
   return (
     <div className='min-h-screen pt-40 w-full flex justify-center items-center md:pt-24'>
       {
@@ -80,6 +134,11 @@ function PaymentSuccess() {
         
       </div>
       }
+
+       <div ref={invoiceRef} style={{ backgroundColor:'red' }}>
+        <Invoice invoiceData={invoiceData} />
+      </div>
+       <button onClick={generatePDF}>Download Invoice</button>
     </div>
   )
 }

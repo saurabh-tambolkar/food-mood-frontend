@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 import { useToast } from '../components/ui/use-toast';
 import { AuthContext } from '../context/Auth';
+import { GoogleLogin } from '@react-oauth/google';
+import apiClient from '../context/apiClient';
 
 
 const SignUpFormSchema = z.object({
@@ -32,7 +34,7 @@ function SignIn() {
   const {toast} = useToast()
   const navigate = useNavigate();
 
-  const {login,isSubmitting} = useContext(AuthContext)
+  const {login,isSubmitting,setCurrentUser} = useContext(AuthContext)
 
   const form = useForm({
     resolver: zodResolver(SignUpFormSchema),
@@ -48,6 +50,28 @@ function SignIn() {
   const onSubmit=(data)=>{
     login(data)
   }
+
+  const handleGoogleLogin = async (credentialResponse) => {
+  const googleToken = credentialResponse.credential;
+  console.log(googleToken);
+
+  // // Send Google ID token to your backend
+  const res = await apiClient.post('/api/auth/google', {
+    idToken: googleToken,
+  });
+  console.log(res.data)
+  if (res.data && res.data.success) {
+        setCurrentUser(res.data.user);
+        localStorage.setItem('refreshToken', res.data.refreshToken);
+        document.cookie = `fmCookie=${res.data.accessToken}; max-age=86400; path=/; Secure; SameSite=Strict`; 
+        toast({
+          title: res.data.message || 'Signed up successfully!',
+          description: 'Welcome to Food Mood!',
+          variant: 'success',
+        });
+        navigate('/');
+      }
+};
 
   return (
 <div className="min-h-screen w-full pt-24 flex justify-center items-center bg-white dark:bg-slate-950">
@@ -104,6 +128,12 @@ function SignIn() {
         </Button>
       </form>
     </Form>
+    <div className='flex items-center gap-2'>
+      <div className='h-0 w-full border-gray-200 border '></div>
+          <p className='text-xs text-gray-500 '>OR</p>
+      <div className='h-0 w-full border-gray-200 border '></div>
+    </div>
+    <GoogleLogin onSuccess={handleGoogleLogin} onError={() => console.log("Login Failed")} />
   <div className='space-y-2'>
       <p className="text-left"><Link className="text-sky-600 hover:text-sky-800 text-sm" to={'/forgot-password'}>Forgot Password ?</Link></p>
       <p className="text-center">Create an account? <Link className="text-sky-600 hover:text-sky-800" to={'/sign-up'}>Sign Up</Link></p>

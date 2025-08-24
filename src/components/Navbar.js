@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, User2Icon, Moon, Sun, Menu, X } from "lucide-react";
+import profileImg from "../assets/profileDummy.png"
+import { ShoppingCart, User2Icon, Moon, Sun, Menu, X, Disc2, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { AuthContext } from "../context/Auth";
@@ -77,7 +78,7 @@ function Navbar() {
 
   return (
     <div className="nav flex justify-center relative">
-      <div className="bg-slate-900 px-4 shadow-lg dark:bg-slate-900 z-12 w-full md:w-9/12 text-white text-xl md:text-xl font-semibold py-4 md:py-0 h-20 md:h-20 flex flex-row justify-between items-center space-y-2 md:rounded-b-2xl fixed">
+      <div className="bg-slate-900  z-50 px-4 shadow-lg dark:bg-slate-900 z-12 w-full md:w-9/12 text-white text-xl md:text-xl font-semibold py-4 md:py-0 h-20 md:h-20 flex flex-row justify-between items-center space-y-2 md:rounded-b-2xl fixed">
         <Link to="/" className=" text-white text-2xl md:text-3xl font-bold">
           Food_Mood
         </Link>
@@ -142,7 +143,7 @@ function Navbar() {
           )}
         </div>
         {currentUser ? (
-          <div className="hidden md:block flex mr-4 relative">
+          <div className="hidden md:block flex mr-4 relative items-center justify-center">
             <Button
               onClick={toggleDarkMode}
               className=" dark:bg-slate-900 dark:hover:bg-slate-900"
@@ -157,16 +158,14 @@ function Navbar() {
               )}
             </Button>
             <Button className="bg-amber-600 hover:bg-amber-500 text-black font-bold mr-1">
-              <Link to="/my-cart" className="flex">
-                Cart
-                <ShoppingCart
-                  strokeWidth={2}
-                  className="ml-1 text-black size-5 "
-                />
+              <Link to="/my-plate" className="flex">
+                Plate
+                <Disc2 strokeWidth={2}
+                  className="ml-1 text-black size-5 "/>
                 {cartLength !== 0 && (
                   <Badge
                     variant="destructive"
-                    className="absolute -top-3 bg-red-600 right-24"
+                    className="absolute -top-2 bg-red-600 right-20"
                   >
                     {cartLength}
                   </Badge>
@@ -176,18 +175,34 @@ function Navbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button className="bg-amber-600 hover:bg-amber-500 text-black font-bold">
-                  Profile
-                  <User2Icon
+                <Button className=" text-black font-bold gap-2 p-4 align-middle">
+                   {/* {" "} */}
+                  {/* <User2Icon
                     strokeWidth={2}
                     className="ml-1 text-black size-5"
-                  />
+                  /> */}
+                {
+                  currentUser && currentUser?.profileImage
+                  ?
+                    <img src={currentUser?.profileImage?.url || currentUser?.profileImage} width={"40px"} height={"40px"} className="rounded-full align-middle object-cover"/>
+                  :
+                  <div className="bg-white rounded-[50%] p-1">
+                    <img src={profileImg} width={"30px"} height={"30px"} className="rounded-[80%] align-middle"/>
+                  </div>
+                }
                 </Button>
+                
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>My Account
+
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to={"/my-profile"}>
+                  Profile
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
 

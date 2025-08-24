@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../context/apiClient';
-import { ChevronDown,ChevronUp } from 'lucide-react';
+import { ChevronDown,ChevronUp, Loader2 } from 'lucide-react';
 
 function MyOrders() {
 
   const [orders,setOrders] = useState([]);
+  const [loading,setLoading] = useState(false);
  
 
   const navigate=useNavigate()
@@ -20,6 +21,7 @@ function MyOrders() {
 
   const getMyOrders = async()=>{
     try{
+      setLoading(true);
       const response = await apiClient.get(`/api/get-Orders`,{withCredentials:true})
       console.log("this is response of orders",response)
       setOrders(response.data.orders)
@@ -27,6 +29,9 @@ function MyOrders() {
     catch(err){
       console.log("thisis err",err)
       setOrders([])
+    }
+    finally{
+      setLoading(false);
     }
   }
 
@@ -38,7 +43,10 @@ function MyOrders() {
     <div className='min-h-screen pt-40 md:pt-24 menu w-11/12 mx-auto'>
       {/* <button onClick={secret}>Hit secret here</button> */}
       {
-        orders.length !==0 ?
+        loading && <div className='flex text-center justify-center items-center mt-10'>Loading your orders <Loader2 className="ml-2 h-4 w-4 animate-spin" /></div>
+      }
+      {
+        !loading && orders.length > 0 ?
         <div>
           <h1 className="text-5xl font-bold m-8">My Orders</h1>
           {

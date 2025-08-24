@@ -41,15 +41,15 @@ function Card({options,foodItems}) {
           getCartLength();
           getCartItems();
           toast({
-            title: 'Item Added',
-            description: 'Product has been added to your cart',
+            title: 'Dish Added',
+            description: 'Dish has been added to your Plate',
           })
         }
       } catch (error) {
         console.log(error)
         toast({
-          title: 'Item cant be added',
-          description: 'Product has not been added to your cart',
+          title: 'Dish cant be added',
+          description: 'Dish has not been added to your Plate',
           variant:"destructive"
         })
       }
@@ -57,7 +57,7 @@ function Card({options,foodItems}) {
     else{
       toast({
         title: 'Please login',
-        description: 'You need to login to add item to cart',
+        description: 'You need to login to add Dish to Plate',
         variant:"destructive"
         })
     }
@@ -95,7 +95,7 @@ function Card({options,foodItems}) {
       </div>
       <div className="flex justify-center p-1">
         {/* <Button className=" text-white dark:text-black font-bold" onClick={()=>handleAddToCart(foodItems)}>Add to Cart</Button> */}
-        <Button className=" text-white dark:text-black font-bold" onClick={()=>handleAddToCartModel(foodItems)}>Add to Cart</Button>
+        <Button className=" text-white dark:text-black font-bold" onClick={()=>handleAddToCartModel(foodItems)}>Add to Plate</Button>
       </div>
     </div>
   )

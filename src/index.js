@@ -9,17 +9,20 @@ import AuthProvider from './context/Auth';
 import { Provider } from 'react-redux';
 import store from './context/store';
 import CartProvider from './context/CartContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <AuthProvider>
       <CartProvider>
     <App />
     <Toaster />
       </CartProvider>
     </AuthProvider>
+    </GoogleOAuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
