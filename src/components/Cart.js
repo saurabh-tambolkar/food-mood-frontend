@@ -106,7 +106,49 @@ function Cart() {
           },
           theme: {
               "color": "#0F172A"
-          }
+          },
+          handler: async function (response) {
+  try {
+    const verifyRes = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/verify-payment`,
+      {
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_signature: response.razorpay_signature,
+      },
+      { withCredentials: true } // important if you're using cookies
+    );
+
+    console.log(verifyRes.data)
+    if (verifyRes.data.success) {
+      toast({
+        title: "Payment Successful 🎉",
+        description: "Your order has been placed!",
+      });
+
+      // handleEmptyCart(); // clear cart
+      
+      // 🔥 redirect to success page
+      window.location.href = `/paymentsuccess?refrence=${response.razorpay_payment_id}`;
+      getCartItems();
+      getCartLength();
+    } else {
+      toast({
+        title: "Payment Verification Failed",
+        description: verifyRes.data.message,
+        variant: "destructive",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    toast({
+      title: "Server Error",
+      description: "Could not verify payment",
+      variant: "destructive",
+    });
+  }
+},
+
 
         };
         const paymentObject = new window.Razorpay(options); 

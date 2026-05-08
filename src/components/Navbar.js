@@ -64,7 +64,8 @@ function Navbar() {
     setProfileIsOpen(false);
   };
 
-  const toggleDarkMode = () => {
+  const 
+  toggleDarkMode = () => {
     if (isDarkMode) {
       setIsDarkMode(false);
       localStorage.setItem("theme", "light");
@@ -287,7 +288,7 @@ function Navbar() {
               My Orders
             </Link>
             <Button className="bg-amber-600 hover:bg-amber-500 text-black font-bold mr-1" onClick={()=>setMenuIsOpen(false)}>
-              <Link to="/my-cart" className="flex items-center justify-around">
+              <Link to="/my-plate" className="flex items-center justify-around">
                 Cart
                 <ShoppingCart
                   strokeWidth={2}
@@ -312,7 +313,11 @@ function Navbar() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+               <DropdownMenuItem>
+                  <Link to={"/my-profile"}>
+                  Profile
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom';
-import { CircleCheckBig,Loader2, Vault } from 'lucide-react';
+import { ArrowDownToLine, ChevronDown, ChevronUp, CircleCheckBig,Loader2, Vault } from 'lucide-react';
 import apiClient from '../context/apiClient';
 import { useSelector } from 'react-redux';
 import { useToast } from '../components/ui/use-toast';
@@ -8,6 +8,7 @@ import { CartContext } from '../context/CartContext';
 import Invoice from "../components/Invoice"
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { AuthContext } from '../context/Auth';
 
 function PaymentSuccess() {
 
@@ -16,6 +17,10 @@ function PaymentSuccess() {
     let paymentId = searchQuery.get("refrence")
 
     const [orderSuccess,setOrderSuccess] = useState(false)
+    const [showInvoice,setShowInvoice] = useState(false)
+    const [prodsInvoice,setProdsInvoice] = useState([])
+    const [prodsInvoicePrice,setProdsInvoicePrice] = useState("")
+    const [prodsInvoiceDate,setProdsInvoiceDate] = useState("")
 
     const [isErrorInPlacingOrder,setIsErrorInPlacingOrder] = useState(false);
     const [errMsg,setErrMsg] = useState('');
@@ -30,6 +35,14 @@ function PaymentSuccess() {
        console.log(res.data)
        if(res.data.success){
         setOrderSuccess(true)
+        let invoiceData = res.data.data.products.map((prod)=>({
+          name: prod.productId.name,
+          price:prod.price,
+          quantity:prod.quantity
+        }))
+        setProdsInvoice(invoiceData)
+        setProdsInvoicePrice(res.data.data.totalAmount)
+        setProdsInvoiceDate(res.data.data.orderDate)
         toast({
           title: "Order Placed Successfully",
           description: "Your order has been placed successfully",
@@ -59,28 +72,10 @@ function PaymentSuccess() {
 
      const invoiceData = {
   invoiceNumber: "INV-1001",
-  customerName: "Saurabh Tambolkar",
-  email: "saurabh@example.com",
-  date: "2025-07-29",
-  paymentMethod: "Credit Card",
-  items: [
-    {
-      name: "Veggie Delight Pizza",
-      quantity: 2,
-      price: 299,
-    },
-    {
-      name: "Choco Lava Cake",
-      quantity: 1,
-      price: 129,
-    },
-    {
-      name: "Coca-Cola (500ml)",
-      quantity: 3,
-      price: 50,
-    },
-  ],
-  total: 299 * 2 + 129 + 50 * 3, // 597 + 129 + 150 = 876
+  date: prodsInvoiceDate?.split("T")[0],
+  // paymentMethod: "Credit Card",
+  items: prodsInvoice,
+  total: prodsInvoicePrice
 };
 
 
@@ -105,15 +100,33 @@ function PaymentSuccess() {
   };
 
   return (
-    <div className='min-h-screen pt-40 w-full flex justify-center items-center md:pt-24'>
+    <div className='min-h-screen pt-40 w-full flex justify-center items-center md:pt-24 md: pb-24'>
       {
         orderSuccess ?
-        <div className='bg-green-500 w-1/3 mx-auto h-[50vh] rounded-xl'>
+        <div className='bg-green-500 w-1/3 mx-auto  rounded-xl'>
         <h1 className='text-center text-5xl font-bold p-4'>Thank You!</h1>
         <h1 className='text-center text-2xl flex items-center justify-center font-bold p-10 gap-4'>Order Successfull <CircleCheckBig strokeWidth={2.75} className="ml-1 text-white size-8" /></h1>
         <p className='text-center text-xl font-semibold p-5'>Refrence No. : {searchQuery.get("refrence")}</p>
         <p className='text-center text-md font-semibold'>{new Date().toLocaleTimeString()}</p>
         <p className='text-center text-md font-semibold'>You will get your order soon.</p>
+        {
+          showInvoice ?
+        <div className='justify-center items-center flex m-8 flex-col relative'>
+           <div ref={invoiceRef} style={{ width:'300px' }}>
+        <Invoice invoiceData={invoiceData} />
+      </div>
+
+     
+       <button onClick={generatePDF} className='bg-slate-900 p-4 rounded-full absolute top-2 right-0'> <ArrowDownToLine className='text-white'/> </button>
+       <ChevronUp onClick={()=>setShowInvoice(false)} />
+        </div>
+        :
+        <div className='flex justify-center m-8 cursor-pointer' onClick={()=>setShowInvoice(true)}>
+          <p>Invoice</p>
+          <ChevronDown />
+        </div>
+
+        }
       </div>
       :
       isErrorInPlacingOrder ?
@@ -135,10 +148,7 @@ function PaymentSuccess() {
       </div>
       }
 
-       <div ref={invoiceRef} style={{ backgroundColor:'red' }}>
-        <Invoice invoiceData={invoiceData} />
-      </div>
-       <button onClick={generatePDF}>Download Invoice</button>
+      
     </div>
   )
 }

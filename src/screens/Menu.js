@@ -3,6 +3,8 @@ import axios from 'axios';
 import "../App.css"
 import Card from '../components/Card';
 import { ArrowDownToLine, Loader2 } from "lucide-react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 let menu_url = "http://localhost:3000/menu_card.jpg";
 
@@ -83,6 +85,10 @@ function Menu() {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+    useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
+
   return (
     <div className="min-h-screen pt-40 md:pt-24 menu w-11/12 mx-auto">
       <div className="fixed bottom-2 right-1">
@@ -107,7 +113,7 @@ function Menu() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div> */}
-      <div className='flex catScroll gap-24 overflow-x-scroll p-4 w-full justify-center items-baseline  scrollbar-hide'>
+      <div data-aos="fade-down" className='flex catScroll gap-24 overflow-x-scroll p-4 w-full justify-center items-baseline  scrollbar-hide'>
          {
         categories.length > 0
         &&

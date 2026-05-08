@@ -11,10 +11,10 @@ const Invoice = ({ invoiceData }) => {
       </div>
 
       {/* Customer Info */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <p><span className="font-semibold">Customer:</span> {invoiceData.customerName}</p>
         <p><span className="font-semibold">Email:</span> {invoiceData.email}</p>
-      </div>
+      </div> */}
 
       {/* Items */}
       <div className="mb-6">
@@ -32,7 +32,6 @@ const Invoice = ({ invoiceData }) => {
       {/* Total and Payment */}
       <div className="text-right mb-4">
         <p className="text-lg font-bold">Total: ₹{invoiceData.total}</p>
-        <p><span className="font-semibold">Payment:</span> {invoiceData.paymentMethod}</p>
       </div>
 
       {/* Footer */}

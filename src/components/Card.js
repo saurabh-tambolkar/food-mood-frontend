@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct,removeProduct,updateProduct,dropCart } from '../context/slice';
@@ -6,6 +6,8 @@ import { useToast } from './ui/use-toast';
 import apiClient from '../context/apiClient';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/Auth';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 function Card({options,foodItems}) {
@@ -63,15 +65,19 @@ function Card({options,foodItems}) {
     }
   }
 
+    useEffect(() => {
+    AOS.init({ duration: 1000, once: false });
+  }, []);
+
   return (
-    <div className='card m-4 shadow-lg dark:bg-gray-800 text-black  dark:text-white min-w-72 max-h-fit rounded-md'>
+    <div  data-aos="fade-up" className='card m-4 shadow-lg dark:bg-gray-800 text-black  dark:text-white min-w-72 max-h-fit rounded-md'>
       <img src={foodItems.img} className='h-48 w-full rounded object-cover' alt="" srcset="" />
       <div className="body p-1">
         <h1 className='text-2xl'>{foodItems.name}</h1>
         <p className='text-sm p-1'>{foodItems.description}</p>
       </div>
       <div className="options w-full p-1 flex justify-around">
-        <select className='rounded w-2/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1' onChange={(e)=>setQuantity(e.target.value)}>
+        <select className='rounded w-2/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1' onChange={(e)=>setQuantity(e.target)}>
           {
             Array.from(Array(6),(e,i)=>{
               return(

@@ -117,8 +117,33 @@ export default function AuthProvider({ children }) {
   //   return match ? match[2] : null;
   // };
 
-  const refreshTokenToSend = localStorage.getItem('refreshToken');
-  const tokenToSend = document.cookie.split('=')[1] || refreshTokenToSend;
+  const getCookie = (name) => {
+
+  const cookies = document.cookie.split(";");
+
+  for (let cookie of cookies) {
+
+    const [key, value] = cookie.trim().split("=");
+
+    if (key === name) {
+      return value;
+    }
+  }
+
+  return null;
+};
+
+  // const refreshTokenToSend = localStorage.getItem('refreshToken');
+  // // const tokenToSend = document?.cookie?.split(' ')[1]?.split('=')[1] || refreshTokenToSend;
+  // const tokenToSend = document?.cookie?.includes('g_state') ? document?.cookie?.split(" ")[2]?.split('=')[1] : document?.cookie?.split(' ')[1]?.split('=')[1] || refreshTokenToSend;
+  // console.log("tokenToSend",tokenToSend)
+
+  const tokenToSend =
+  getCookie("fmCookie") ||
+  localStorage.getItem("refreshToken");
+
+console.log(tokenToSend);
+
 
   const refreshToken = async () => {
     try {
