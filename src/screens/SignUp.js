@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from 'axios';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import * as z from "zod";
+import { Button } from '../components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import * as z from "zod";
-import { useForm } from 'react-hook-form';
-import { Button } from '../components/ui/button';
-import { Link } from 'react-router-dom';
-import { Loader2,Eye,EyeOff } from 'lucide-react';
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from 'axios';
-import { useToast } from "../components/ui/use-toast"
-import { useNavigate } from 'react-router-dom';
+import { useToast } from "../components/ui/use-toast";
 
 
 const SignUpFormSchema = z.object({

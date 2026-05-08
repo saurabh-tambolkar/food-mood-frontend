@@ -4,7 +4,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
@@ -14,7 +13,6 @@ import { Button } from '../components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader2,Eye,EyeOff } from 'lucide-react';
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from 'axios';
 import { useToast } from '../components/ui/use-toast';
 import { AuthContext } from '../context/Auth';
 import { GoogleLogin } from '@react-oauth/google';
