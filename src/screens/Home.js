@@ -1,40 +1,36 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import photo from "../assets/photo1.svg";
-import appPhoto from "../assets/hm.png";
-import axios from "axios";
-import Card from "../components/Card";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import {
   ArrowDownToLine,
   ArrowRight,
+  Bot,
   CheckCheck,
   Loader2,
   MessagesSquare,
   SendHorizontal,
-  X,
-  Bot
+  X
 } from "lucide-react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { AuthContext } from "../context/Auth";
-import apiClient from "../context/apiClient";
-import { Button } from "../components/ui/button";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import android from "../assets/android.png";
+import ios from "../assets/apple.png";
 import Burger from "../assets/burger.png";
+import appPhoto from "../assets/hm.png";
+import plate from "../assets/msg.webp";
 import Nood from "../assets/nood.png";
+import photo from "../assets/photo1.svg";
 import piz from "../assets/piz.png";
 import sweet from "../assets/sweet.png";
 import tacos from "../assets/tacos.png";
-import ios from "../assets/apple.png";
-import android from "../assets/android.png";
-import plate from "../assets/msg.webp";
-import plate2 from "../assets/startfood.png";
-import socket from "../context/socket";
-import { Link } from "react-router-dom";
 import { showNotification } from "../components/ShowNotification";
+import { Button } from "../components/ui/button";
+import { AuthContext } from "../context/Auth";
+import apiClient from "../context/apiClient";
+import socket from "../context/socket";
 
 let menu_url = "https://food-mood-frontend.vercel.app/menu_card.jpg";
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [query, setQuery] = useState("");
   const [isLoadingMsg, setIsLoadingMsg] = useState(false);
@@ -46,8 +42,6 @@ function Home() {
   const [showChatbotBox, setShowChatbotBox] = useState(false);
   const [isSendingMsg, setIsSendingMsg] = useState(false);
   // const [isSendingQuery, setIsSendingQuery] = useState(false);
-  const [foodCat, setFoodCat] = useState([]);
-  const [foodItems, setFoodItems] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
   // console.log("this is user",currentUser)

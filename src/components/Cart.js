@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button } from './ui/button'
-import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react' 
-import { dropCart, removeProduct } from '../context/slice'
 import axios from 'axios'
+import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react'
+import { useContext } from 'react'
 import { AuthContext } from '../context/Auth'
-import apiClient from '../context/apiClient'
-import { useToast } from './ui/use-toast'
 import { CartContext } from '../context/CartContext'
+import apiClient from '../context/apiClient'
+import { Button } from './ui/button'
+import { useToast } from './ui/use-toast'
 
 function Cart() {
 
@@ -177,7 +175,7 @@ function Cart() {
         cartItems.map((item)=>{
             return(
                 <div key={item.id} className='item m-2 md:m-2 grid grid-cols-4 gap-2 md:gap-5'>
-                    <img src={item.productId.img} className='rounded w-full h-full object-cover'/>
+                    <img alt='photo' src={item.productId.img} className='rounded w-full h-full object-cover'/>
                     <div className="details w-full col-span-2">
                     <h3 className='font-bold'>{item.productId.name}</h3>
                     <div className="size flex justify-between w-full">

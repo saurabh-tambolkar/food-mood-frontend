@@ -64,7 +64,7 @@ function PaymentSuccess() {
 
     useEffect(()=>{
       placeOrder()
-    },[])
+    },[placeOrder])
 
 
      const invoiceRef = useRef();

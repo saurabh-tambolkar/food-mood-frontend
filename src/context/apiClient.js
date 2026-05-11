@@ -6,11 +6,31 @@ const apiClient = axios.create({
     withCredentials:true,
 })
 
+  const getCookie = (name) => {
+
+  const cookies = document.cookie.split(";");
+
+  for (let cookie of cookies) {
+
+    const [key, value] = cookie.trim().split("=");
+
+    if (key === name) {
+      return value;
+    }
+  }
+
+  return null;
+};
+
 apiClient.interceptors.request.use(
     (config) => {
-        const accessToken = document.cookie.split("=")[1];
-        if (accessToken) {
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
+        // const accessToken = document.cookie.split("=")[1];
+        const tokenToSend =
+  getCookie("fmCookie") ||
+  localStorage.getItem("refreshToken");
+        if (tokenToSend) {
+            console.log('token is present adding to bearer of req',tokenToSend)
+            config.headers['Authorization'] = `Bearer ${tokenToSend}`;
         }
         return config;
     },

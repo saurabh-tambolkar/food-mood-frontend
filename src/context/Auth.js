@@ -142,7 +142,7 @@ export default function AuthProvider({ children }) {
   getCookie("fmCookie") ||
   localStorage.getItem("refreshToken");
 
-console.log(tokenToSend);
+// console.log(tokenToSend);
 
 
   const refreshToken = async () => {

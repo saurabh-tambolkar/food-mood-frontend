@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button } from './ui/button'
-import { useDispatch, useSelector } from 'react-redux'
-import { addProduct,removeProduct,updateProduct,dropCart } from '../context/slice';
 import { useToast } from './ui/use-toast';
 import apiClient from '../context/apiClient';
 import { CartContext } from '../context/CartContext';

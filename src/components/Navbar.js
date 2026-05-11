@@ -1,10 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { Disc2, Menu, Moon, ShoppingCart, Sun, User2Icon, X } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import profileImg from "../assets/profileDummy.png"
-import { ShoppingCart, User2Icon, Moon, Sun, Menu, X, Disc2, User } from "lucide-react";
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { AuthContext } from "../context/Auth";
+import profileImg from "../assets/profileDummy.png";
 import {
   Dialog,
   DialogClose,
@@ -15,10 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
-import Cart from "./Cart";
-import { useDispatch, useSelector } from "react-redux";
-import { dropCart } from "../context/slice";
-import { Badge } from "./ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,20 +20,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
-import apiClient from "../context/apiClient";
+import { AuthContext } from "../context/Auth";
 import { CartContext } from "../context/CartContext";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 
 function Navbar() {
   const location = useLocation();
-  const { toast } = useToast();
   const { logout, currentUser } = useContext(AuthContext);
 
   const [isDarkMode, setIsDarkMode] = useState();
 
-  const { name, cartLength } = useContext(CartContext);
+  const {  cartLength } = useContext(CartContext);
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
+  const [ setProfileIsOpen] = useState(false);
 
   // const dispatch = useDispatch();
   // const cart = useSelector((state) => state.cart);
@@ -56,13 +51,13 @@ function Navbar() {
     }
   }, []);
 
-  const handleProfileToggle = () => {
-    setProfileIsOpen((prev) => !prev);
-  };
+  // const handleProfileToggle = () => {
+  //   setProfileIsOpen((prev) => !prev);
+  // };
 
-  const handleOverlayClick = () => {
-    setProfileIsOpen(false);
-  };
+  // const handleOverlayClick = () => {
+  //   setProfileIsOpen(false);
+  // };
 
   const 
   toggleDarkMode = () => {
@@ -185,10 +180,10 @@ function Navbar() {
                 {
                   currentUser && currentUser?.profileImage
                   ?
-                    <img src={currentUser?.profileImage?.url || currentUser?.profileImage} width={"40px"} height={"40px"} className="rounded-full align-middle object-cover"/>
+                    <img alt='photo' src={currentUser?.profileImage?.url || currentUser?.profileImage} width={"40px"} height={"40px"} className="rounded-full align-middle object-cover"/>
                   :
                   <div className="bg-white rounded-[50%] p-1">
-                    <img src={profileImg} width={"30px"} height={"30px"} className="rounded-[80%] align-middle"/>
+                    <img alt='photo' src={profileImg} width={"30px"} height={"30px"} className="rounded-[80%] align-middle"/>
                   </div>
                 }
                 </Button>

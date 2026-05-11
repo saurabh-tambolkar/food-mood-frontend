@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css"
 import Navbar from "./components/Navbar";
 import Home from "./screens/Home";
@@ -12,19 +12,12 @@ import SignIn from "./screens/SignIn";
 import Cart from "./components/Cart";
 import Verify from "./screens/Verify";
 import PaymentSuccess from "./screens/PaymentSuccess";
-import { AuthContext } from "./context/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import ForgotPassWord from "./screens/ForgotPassWord";
 import ResetPass from "./screens/ResetPass";
 import NotFound from "./screens/NotFound";
 import Profile from "./screens/Profile";
-
-const getToken = () =>{
-   const cookie = document.cookie;
-  const token = cookie.split("=")[1]
-  return token;
-}
 
 
 
