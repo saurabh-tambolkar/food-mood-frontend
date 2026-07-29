@@ -170,7 +170,7 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
   if (socket && currentUser?._id) {
-    console.log("this id is added",currentUser._id)
+    // console.log("this id is added",currentUser._id)
     socket.emit("addUser", currentUser._id);
   }
 }, [socket,currentUser]);

@@ -29,7 +29,7 @@ apiClient.interceptors.request.use(
   getCookie("fmCookie") ||
   localStorage.getItem("refreshToken");
         if (tokenToSend) {
-            console.log('token is present adding to bearer of req',tokenToSend)
+            // console.log('token is present adding to bearer of req',tokenToSend)
             config.headers['Authorization'] = `Bearer ${tokenToSend}`;
         }
         return config;
@@ -73,7 +73,7 @@ apiClient.interceptors.request.use(
 // );  
 
 apiClient.interceptors.response.use(function(response){
-    console.log("this is from api client",response)
+    // console.log("this is from api client",response)
     return response
 },function (error){
     console.log("this is from api client",error)
@@ -88,7 +88,7 @@ apiClient.interceptors.response.use(function(response){
                 const refreshToken=localStorage.getItem('refreshToken')
                 const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/refresh/${refreshToken}`);
                 console.log(data)
-                document.cookie=`fmCookie=${data.accessToken}; max-age=${60*60}; Secure; SameSite=Strict;`
+                document.cookie=`duziolon=${data.accessToken}; max-age=${60*60}; Secure; SameSite=Strict;`
                 
                 // Retry the original request with the new token
                 originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;

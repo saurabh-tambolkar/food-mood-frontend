@@ -6,9 +6,7 @@ import { AuthContext } from './Auth';
 const CartContext = createContext();
 
 export default function CartProvider({children}) {
-    // let name = "saurabh";
     let {currentUser} = useContext(AuthContext);
-    console.log("this is current  user form cart",currentUser)
 
     const [cartLength, setCartLength] = useState("0");
 
@@ -18,7 +16,6 @@ export default function CartProvider({children}) {
         try {
           const response = await apiClient.get("/api/getCartLength");
           if (response.data.success) {
-            console.log(response.data);
             setCartLength(response.data.numberOfItemsInCart);
           }
         } catch (error) {
@@ -33,7 +30,6 @@ export default function CartProvider({children}) {
         try{
           const response = await apiClient.get('/api/getCart')
           setCartItems(response.data.cart.products)
-          console.log("this is items",response.data.cart.products)
           setTotal(response.data.cart.totalAmount)
         }
         catch(err){
@@ -59,11 +55,11 @@ export default function CartProvider({children}) {
       }
   
       useEffect(()=>{
-        if(currentUser!==null){
+        if(currentUser !== null){
           getCartItems()
           getCartLength();
         }
-      },[])
+      },[currentUser])
     
 
   return (

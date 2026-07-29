@@ -19,8 +19,8 @@ import { Loader2 } from 'lucide-react';
 
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useContext(AuthContext);
-  console.log("Current User:", currentUser);
-  console.log("Loading State:", loading);
+  // console.log("Current User:", currentUser);
+  // console.log("Loading State:", loading);
 
 
 

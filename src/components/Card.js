@@ -1,33 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Button } from './ui/button'
-import { useToast } from './ui/use-toast';
-import apiClient from '../context/apiClient';
-import { CartContext } from '../context/CartContext';
-import { AuthContext } from '../context/Auth';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useContext, useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
+import apiClient from "../context/apiClient";
+import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/Auth";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { Loader2 } from "lucide-react";
 
+function Card({ options, foodItems }) {
+  const { toast } = useToast();
 
-function Card({options,foodItems}) {
+  let data = options[0];
+  let sizeOptions = Object.keys(data);
+  console.log(foodItems);
 
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState(sizeOptions[0]);
 
-  const {toast} = useToast()
+  let finalPrice = quantity * parseInt(data[size], 10);
 
-  let data = options[0]
-  let sizeOptions = Object.keys(data)
-  // console.log(sizeOptions[0])
+  const { getCartLength, getCartItems } = useContext(CartContext);
+  let { currentUser } = useContext(AuthContext);
 
-  const [quantity,setQuantity] = useState(1)
-  const [size,setSize] = useState(sizeOptions[0])
+  const [loading, setLoading] = useState(false);
+  const [dishId, setDishId] = useState(null);
 
-  let finalPrice=quantity*parseInt(data[size],10)
-
-  const {getCartLength,getCartItems} = useContext(CartContext)
-  let {currentUser} = useContext(AuthContext);
-
-  const handleAddToCartModel=async(item)=>{
-    if(currentUser !== null){
+  const handleAddToCartModel = async (item) => {
+    if (currentUser !== null) {
       try {
+        setLoading(true);
+        setDishId(item._id);
+        console.log(item._id);
         let dataToSend = {
           productId:item._id,
           size:size,
@@ -45,53 +49,68 @@ function Card({options,foodItems}) {
             description: 'Dish has been added to your Plate',
           })
         }
+        // setTimeout(() => {
+        //   console.log("done");
+        // }, 3000);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast({
-          title: 'Dish cant be added',
-          description: 'Dish has not been added to your Plate',
-          variant:"destructive"
-        })
+          title: "Dish cant be added",
+          description: "Dish has not been added to your Plate",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+        setDishId(null);
       }
-    }
-    else{
+    } else {
       toast({
-        title: 'Please login',
-        description: 'You need to login to add Dish to Plate',
-        variant:"destructive"
-        })
+        title: "Please login",
+        description: "You need to login to add Dish to Plate",
+        variant: "destructive",
+      });
     }
-  }
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     AOS.init({ duration: 1000, once: false });
   }, []);
 
   return (
-    <div  data-aos="fade-up" className='card m-4 shadow-lg dark:bg-gray-800 text-black  dark:text-white min-w-72 max-h-fit rounded-md'>
-      <img src={foodItems.img} className='h-48 w-full rounded object-cover' alt="" srcset="" />
+    <div
+      data-aos="fade-up"
+      className="card m-4 shadow-lg dark:bg-gray-800 text-black  dark:text-white min-w-72 max-h-fit rounded-md"
+    >
+      <img
+        src={foodItems.img}
+        className="h-48 w-full rounded object-cover"
+        alt=""
+        srcset=""
+      />
       <div className="body p-1">
-        <h1 className='text-2xl'>{foodItems.name}</h1>
-        <p className='text-sm p-1'>{foodItems.description}</p>
+        <h1 className="text-2xl">{foodItems.name}</h1>
+        <p className="text-sm p-1">{foodItems.description}</p>
       </div>
       <div className="options w-full p-1 flex justify-around">
-        <select className='rounded w-2/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1' onChange={(e)=>setQuantity(e.target)}>
-          {
-            Array.from(Array(6),(e,i)=>{
-              return(
-                <option keys={i+1} value={i+1}>{i+1}</option>
-              )
-            })
-          }
+        <select
+          className="rounded w-2/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1"
+          onChange={(e) => setQuantity(e.target)}
+        >
+          {Array.from(Array(6), (e, i) => {
+            return (
+              <option keys={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            );
+          })}
         </select>
-        <select className='rounded w-4/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1' onChange={(e)=>setSize(e.target.value)}>
-          {
-            sizeOptions.map((size)=>{
-              return(
-                <option value={size}>{size}</option>
-              )
-            })
-          }
+        <select
+          className="rounded w-4/12 h-100 bg-white dark:bg-gray-800 border border-gray-500 border-1"
+          onChange={(e) => setSize(e.target.value)}
+        >
+          {sizeOptions.map((size) => {
+            return <option value={size}>{size}</option>;
+          })}
         </select>
         <div>
           <p>Total: {finalPrice}</p>
@@ -99,10 +118,22 @@ function Card({options,foodItems}) {
       </div>
       <div className="flex justify-center p-1">
         {/* <Button className=" text-white dark:text-black font-bold" onClick={()=>handleAddToCart(foodItems)}>Add to Cart</Button> */}
-        <Button className=" text-white dark:text-black font-bold" onClick={()=>handleAddToCartModel(foodItems)}>Add to Plate</Button>
+        <Button
+          className=" text-white dark:text-black font-bold w-2/3"
+          disabled={loading && dishId === foodItems._id}
+          onClick={() => handleAddToCartModel(foodItems)}
+        >
+          {loading && dishId === foodItems._id ? (
+            <>
+              <Loader2 className="animate-spin size-4" />
+            </>
+          ) : (
+            "Add to Plate"
+          )}
+        </Button>
       </div>
     </div>
-  )
+  );
 }
 
-export default Card
+export default Card;

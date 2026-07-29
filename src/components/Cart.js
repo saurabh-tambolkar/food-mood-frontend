@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react'
-import { useContext } from 'react'
+import { CircleMinus, CirclePlus, Loader2, Trash2 } from 'lucide-react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../context/Auth'
 import { CartContext } from '../context/CartContext'
 import apiClient from '../context/apiClient'
@@ -11,6 +11,9 @@ function Cart() {
 
   const {currentUser} = useContext(AuthContext)
   const {cartItems,total,handleEmptyCart,getCartLength,getCartItems} = useContext(CartContext)
+  const [loading,setLoading] = useState(false)
+  const [itemId,setItemId] = useState(null)
+  const [method,setMethod] = useState("")
 
   const {toast} = useToast()
 
@@ -22,6 +25,9 @@ function Cart() {
 
     const handleIncItem=async(item)=>{
       try{
+        setLoading(true)
+        setItemId(item.productId._id)
+        setMethod("inc")
         let dataToSend = {
           productId:item.productId._id,
           quantity:1,
@@ -47,10 +53,20 @@ function Cart() {
         })
 
       }
+      finally{
+        setLoading(false)
+        setItemId(null)
+        setMethod("")
+      }
     }
 
     const handleDecItem=async(item)=>{
+      // console.log(item.productId._id)
       try{
+        console.log(item.productId._id)
+        setLoading(true)
+        setItemId(item.productId._id)
+        setMethod("dec")
         let dataToSend = {
           productId:item.productId._id,
           quantity:1,
@@ -75,6 +91,11 @@ function Cart() {
           variant:"destructive"
         })
 
+      }
+      finally{
+        setLoading(true)
+        setItemId(null)
+        setMethod("")
       }
     }
 
@@ -181,15 +202,26 @@ function Cart() {
                     <div className="size flex justify-between w-full">
                     <h4 className='font-bold'>Size: {item.size}</h4>
                     <h4 className='font-bold w-4/12 flex justify-evenly items-center'>
-                    <CirclePlus className='size-5' onClick={()=>handleIncItem(item)}/>
+                    {
+                      loading && itemId === item.productId._id && method === "inc" ?
+                      <Loader2 className='animate-spin size-3'/>
+                      :
+                      <CirclePlus className='size-5' onClick={()=>handleIncItem(item)}/>
+                    }
                     {item.quantity} 
-                    <CircleMinus className='size-5' onClick={()=>handleDecItem(item)}/></h4>
+                      {
+                      loading && itemId === item.productId._id && method === "dec" ?
+                      <Loader2 className='animate-spin size-3'/>
+                      :
+                    <CircleMinus className='size-5' onClick={()=>handleDecItem(item)}/>
+                      }
+                    </h4>
                     </div>
                     <h4 className='font-bold'>Price: {item.price}</h4>
                     </div>
-                    <div className="delete flex justify-center items-center">
+                    {/* <div className="delete flex justify-center items-center">
                     <Trash2 onClick={()=>handleRemoveItem(item)} />
-                    </div>
+                    </div> */}
                     {/* <h2>Total Price: ${totalPrice.toFixed(2)}</h2> */}
                 </div>
             )
