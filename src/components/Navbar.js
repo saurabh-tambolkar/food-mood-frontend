@@ -253,7 +253,7 @@ function Navbar() {
         )}
       </div>
       <div
-        className={`fixed top-20 right-0 bg-slate-900 transition-transform duration-300 transform ${
+        className={`fixed z-100 top-20 right-0 bg-slate-900 transition-transform duration-300 transform ${
           menuIsOpen ? "translate-x-0" : "translate-x-full"
         } h-auto w-full md:hidden`}
       >
